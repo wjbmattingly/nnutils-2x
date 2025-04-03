@@ -1,2 +1,0 @@
-include LICENSE README.md *.py nnutils_pytorch/*.py requirements.txt
-recursive-include src *.h

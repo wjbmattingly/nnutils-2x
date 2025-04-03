@@ -1,6 +1,0 @@
-build
-dist
-_nnutils
-*.pyc
-*.so
-*.o

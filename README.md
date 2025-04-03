@@ -1,64 +1,78 @@
-# nnutils
+# nnutils-2x
 
-[![Build Status](https://travis-ci.org/jpuigcerver/nnutils.svg?branch=master)](https://travis-ci.org/jpuigcerver/nnutils)
+Neural network utilities compatible with PyTorch 2.x.
 
-Implementation of different neural network-related utilities for
-CPUs and GPUs (CUDA).
+## Features
 
-So far, most of the utils are related to my need of working with images of
-different sizes grouped into batches with padding.
-
-## Included utils
-
-- Masking images by size
-
-If you are grouping images of different sizes into batches padded with zeros,
-you may need to mask the output/input tensors after/before some layers.
-This layer is very handy in these cases.
-
-- Adaptive pooling
-
-Adaptive pooling layers included in several packages like Torch or PyTorch
-assume that all images in the batch have the same size. My implementation
-takes into account the size of each individual image within the batch to
-apply the adaptive pooling. Current layers include: Average and maximum
-adaptive pooling.
-
-## Requirements
-
-### Minimum:
-- C++14 compiler (tested with GCC 6.4.0 and 7.5.0).
-- [CMake 3.0](https://cmake.org/).
-
-### Recommended:
-- For GPU support: [CUDA Toolkit](https://developer.nvidia.com/cuda-zone).
-- For running tests: [Google Test](https://github.com/google/googletest).
-
-### PyTorch bindings:
-- Python: 3.6, 3.7 and 3.8.
-- [PyTorch 1.6.0](http://pytorch.org/).
+- `adaptive_avgpool_2d`: 2D adaptive average pooling with support for variable-sized inputs
+- `adaptive_maxpool_2d`: 2D adaptive max pooling with support for variable-sized inputs
+- `mask_image_from_size`: Mask a batch of images based on individual sizes
 
 ## Installation
 
-The installation process should be pretty straightforward assuming that you
-have correctly installed the required libraries and tools.
-
-### PyTorch bindings (recommended)
-
 ```bash
-git clone https://github.com/jpuigcerver/nnutils.git
-cd nnutils/pytorch
-python setup.py build
-python setup.py install
+pip install nnutils-2x
 ```
 
-### Standalone C++ library
+Or install from source:
 
 ```bash
-git clone https://github.com/jpuigcerver/nnutils.git
-mkdir -p nnutils/build
-cd nnutils/build
-cmake ..
-make
-make install
+git clone https://github.com/username/nnutils-2x.git
+cd nnutils-2x
+pip install -e .
 ```
+
+## Requirements
+
+- Python 3.8+
+- PyTorch 2.0+
+
+## Example Usage
+
+```python
+import torch
+from nnutils import adaptive_avgpool_2d, adaptive_maxpool_2d, mask_image_from_size
+
+# Create a batch of 3 images with different sizes
+batch = torch.randn(3, 3, 64, 64)
+batch_sizes = torch.tensor([[32, 48], [64, 64], [48, 32]])
+
+# Apply adaptive average pooling
+avg_pooled = adaptive_avgpool_2d(batch, (16, 16), batch_sizes)
+
+# Apply adaptive max pooling
+max_pooled = adaptive_maxpool_2d(batch, (16, 16), batch_sizes)
+
+# Mask images according to their sizes
+masked = mask_image_from_size(batch, batch_sizes, mask_value=0)
+```
+
+## Development
+
+### Directory Structure
+
+```
+nnutils-2x/
+├── nnutils/           # Main package source code
+├── tests/             # Test files
+├── setup.py           # Package setup script
+├── pytest.ini         # Pytest configuration
+└── run_tests.py       # Script to run tests
+```
+
+### Running Tests
+
+```bash
+# Install development dependencies
+pip install -e ".[dev]"
+
+# Run tests
+python run_tests.py
+
+# Or using pytest directly
+pytest
+```
+
+## License
+
+MIT
