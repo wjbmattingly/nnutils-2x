@@ -9,8 +9,8 @@ A collection of neural network utilities compatible with PyTorch 2.x.
 """
 
 setup(
-    name="nnutils-2x",
-    version="0.1.0",
+    name="nnutils-pytorch",
+    version="0.1.1",
     description="Neural network utilities compatible with PyTorch 2.x",
     long_description=long_description,
     long_description_content_type="text/markdown",
